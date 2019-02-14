@@ -11,7 +11,8 @@ app.get('/', (req,res)=>{
   res.sendFile(__dirname + '/index.html')
 })
 app.get('/poll', (req, res)=>{
-  fs.readFile(__dirname + '/poll.json', 'utf8', (err, data)=>{
+  fs.readFile(__dirname + '/poll.json', (err, data)=>{
+    if(err) throw err;
     res.send(data);
   })
 })
@@ -36,7 +37,8 @@ const choosePollOption = (req, res,topic)=>{
     console.log("this is poll1" + JSON.stringify(poll)); 
     poll[topic] +=1; 
     console.log("poll 2 " + JSON.stringify(poll))
-    fs.writeFile(__dirname + '/poll.json', JSON.stringify(poll), ()=>{
+    fs.writeFile(__dirname + '/poll.json', JSON.stringify(poll), (err)=>{
+      if(err) throw err;
       res.status(200).send('want to <a href="/">vote</a> again')
     })
   })
