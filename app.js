@@ -17,7 +17,7 @@ app.get('/poll', (req, res)=>{
 })
 
 app.post('/vote/new',(req, res)=>{
-  console.log("****** " + req.body);
+  console.log("****** " + JSON.stringify(req.body));
   if(req.body.linux === 'on'){
     choosePollOption(req,res, 'linux');
   }else if(req.body.macos === 'on'){
@@ -35,14 +35,11 @@ const choosePollOption = (req, res,topic)=>{
     poll= JSON.parse(data); 
     console.log("this is poll1" + JSON.stringify(poll)); 
     poll[topic] +=1; 
-    console.log(poll)
-    fs.writeFile(__dirname + '/poll.json', JSON.stringify(poll), (err, data)=>{
-      console.log(err);
-      console.log(data); 
+    console.log("poll 2 " + JSON.stringify(poll))
+    fs.writeFile(__dirname + '/poll.json', JSON.stringify(poll), ()=>{
       res.status(200).send('want to <a href="/">vote</a> again')
     })
   })
-  console.log(poll); 
 }
 
 
