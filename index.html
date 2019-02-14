@@ -8,10 +8,10 @@
 </head>
 <body>
    <h1>Vote on a Topic</h1>
-   <form action="/vote/new" method="POST"> 
-     <label for="linux">Linux</label> <input type="checkbox" name="linux" id="linux" class="checkbox" />
-   <label for="macos">Mac OS</label> <input type="checkbox" name="macos" id="macos" class="checkbox"/>
-    <label for="windows">windows</label> <input type="checkbox" name="windows" id="windows" class="checkbox"/>
+   <form action="/vote/new" method="POST" id="pollform"> 
+     <label for="linux">Linux</label> <input type="checkbox" name="linux" id="linux" class="checkbox" onclick="vote(this)"/>
+   <label for="macos">Mac OS</label> <input type="checkbox" name="macos" id="macos" class="checkbox" onclick="vote(this)"/>
+    <label for="windows">windows</label> <input type="checkbox" name="windows" id="windows" class="checkbox" onclick="vote(this)"/>
     <input type="submit" />
    </form>
 
@@ -23,16 +23,33 @@
       
    <p>Mac OS: <span id="macosvotes"> </span> votes</p>
    <p>windows: <span id="windowsvotes"> </span> votes</p>
+
+
+
 <script>
+   
+  let vote = (element)=>{
+  console.log(`this is all the element: ${element.id}`);
+    let checkboxs = document.getElementsByClassName('checkbox'); 
+    for(let i =0; i <= checkboxs.length-1; i++){
+    console.log(`this is all the checkboxs: ${checkboxs[i].id} + ${checkboxs[i].checked}`);
+
+      if(checkboxs[i].id !==element.id){
+        checkboxs[i].checked = false;
+      }
+    }
+
+  }
+
+
+
   window.onload = ()=>{
       fetch('/poll').then((results)=>{
         results.json().then((data)=>{
-          console.log(data)
+          console.log(data) //{linux:6, macos:3, window:7}
           for( i in data){
-            console.log(i);
-            document.getElementById(i+'votes').innerText = data[i];
-            
-
+           //i will be the key ; data[i] will be the value
+            document.getElementById(i+'votes').innerText = data[i]           
           }
         })
       })
